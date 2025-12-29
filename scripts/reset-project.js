@@ -1,3 +1,5 @@
+// scripts/reset-project.js
+
 #!/usr/bin/env node
 
 /**

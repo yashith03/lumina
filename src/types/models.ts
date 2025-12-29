@@ -1,3 +1,5 @@
+// src/types/models.ts
+
 export interface Profile {
   id: string;
   full_name: string | null;

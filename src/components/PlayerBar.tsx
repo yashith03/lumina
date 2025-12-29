@@ -1,3 +1,5 @@
+//src/components/PlayerBar.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import React from 'react';
@@ -33,7 +35,7 @@ export function PlayerBar({
   };
 
   return (
-    <View className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 px-4 py-3">
+    <View className="px-4 py-3 bg-white border-t border-gray-200 dark:bg-gray-900 dark:border-gray-800">
       {/* Progress Bar */}
       <View className="mb-2">
         <Slider
@@ -52,9 +54,9 @@ export function PlayerBar({
         {/* Speed Control */}
         <TouchableOpacity
           onPress={cycleSpeed}
-          className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full"
+          className="px-3 py-2 bg-gray-100 rounded-full dark:bg-gray-800"
         >
-          <Text className="text-gray-900 dark:text-white font-semibold text-sm">
+          <Text className="text-sm font-semibold text-gray-900 dark:text-white">
             {speed}x
           </Text>
         </TouchableOpacity>
@@ -67,7 +69,7 @@ export function PlayerBar({
 
           <TouchableOpacity
             onPress={onPlayPause}
-            className="bg-primary-500 rounded-full p-4"
+            className="p-4 rounded-full bg-primary-500"
           >
             <Ionicons
               name={isPlaying ? 'pause' : 'play'}

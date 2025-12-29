@@ -82,7 +82,7 @@ Utilities:
 
 ### 1. **Install Dependencies**
 ```bash
-cd "e:\React Native\Lumina2"
+cd "e:\React Native\Lumina"
 npm install
 ```
 
@@ -136,7 +136,7 @@ Then choose:
 ## 📂 Project Structure
 
 ```
-Lumina2/
+Lumina/
 ├── app/
 │   ├── _layout.tsx                 # Root layout with providers
 │   ├── (auth)/

@@ -1,3 +1,5 @@
+// src/utils/validators.ts
+
 /**
  * Validate email format
  */

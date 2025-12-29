@@ -1,13 +1,15 @@
+//app/reading/[bookId].tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PlayerBar } from '../../src/components/PlayerBar';
@@ -18,8 +20,8 @@ import { useTTS } from '../../src/hooks/useTTS';
 import { booksService } from '../../src/services/booksService';
 import { textExtractionService } from '../../src/services/textExtractionService';
 import {
-    splitIntoParagraphs,
-    splitParagraphIntoSentences,
+  splitIntoParagraphs,
+  splitParagraphIntoSentences,
 } from '../../src/utils/textChunking';
 
 interface ReadingState {
@@ -269,7 +271,7 @@ export default function ReadingScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-gray-900 justify-center items-center">
+      <SafeAreaView className="items-center justify-center flex-1 bg-white dark:bg-gray-900">
         <ActivityIndicator size="large" color="#0ea5e9" />
       </SafeAreaView>
     );
@@ -278,24 +280,24 @@ export default function ReadingScreen() {
   if (error || !book) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-gray-900">
-        <View className="flex-1 justify-center items-center px-4">
+        <View className="items-center justify-center flex-1 px-4">
           <Ionicons
             name="alert-circle"
             size={60}
             color="#EF4444"
             style={{ marginBottom: 16 }}
           />
-          <Text className="text-gray-900 dark:text-white text-lg font-bold text-center mb-2">
+          <Text className="mb-2 text-lg font-bold text-center text-gray-900 dark:text-white">
             Unable to Load Book
           </Text>
-          <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">
+          <Text className="mb-6 text-center text-gray-600 dark:text-gray-400">
             {error || 'Book not found'}
           </Text>
           <TouchableOpacity
-            className="bg-sky-500 px-6 py-3 rounded-lg"
+            className="px-6 py-3 rounded-lg bg-sky-500"
             onPress={() => router.back()}
           >
-            <Text className="text-white font-semibold">Go Back</Text>
+            <Text className="font-semibold text-white">Go Back</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -309,7 +311,7 @@ export default function ReadingScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={28} color="#0ea5e9" />
         </TouchableOpacity>
-        <Text className="text-gray-900 dark:text-white font-bold flex-1 ml-3 text-center">
+        <Text className="flex-1 ml-3 font-bold text-center text-gray-900 dark:text-white">
           {book.title}
         </Text>
         <TouchableOpacity
@@ -364,25 +366,25 @@ export default function ReadingScreen() {
           )}
         </>
       ) : (
-        <View className="flex-1 justify-center items-center px-6">
+        <View className="items-center justify-center flex-1 px-6">
           <Ionicons
             name="document-text-outline"
             size={60}
             color="#9CA3AF"
             style={{ marginBottom: 16 }}
           />
-          <Text className="text-gray-900 dark:text-white text-lg font-bold text-center mb-2">
+          <Text className="mb-2 text-lg font-bold text-center text-gray-900 dark:text-white">
             Scanned PDF Detected
           </Text>
-          <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">
+          <Text className="mb-6 text-center text-gray-600 dark:text-gray-400">
             This book appears to be a scanned document (image-based PDF). Text extraction failed.
             OCR support is coming soon.
           </Text>
           <TouchableOpacity
-            className="bg-sky-500 px-6 py-3 rounded-lg"
+            className="px-6 py-3 rounded-lg bg-sky-500"
             onPress={() => router.back()}
           >
-            <Text className="text-white font-semibold">Go Back</Text>
+            <Text className="font-semibold text-white">Go Back</Text>
           </TouchableOpacity>
         </View>
       )}

@@ -1,9 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
-
-// Initialize MMKV storage for caching
-const storage = new MMKV({
-  id: 'text-cache',
-});
 
 export interface TextExtractionResult {
   text: string;
@@ -11,22 +7,19 @@ export interface TextExtractionResult {
   pageCount?: number;
 }
 
+const CACHE_PREFIX = 'text_cache_';
+
 export const textExtractionService = {
   /**
-   * Extract text from PDF
-   * Note: This is a placeholder. In production, you'd use a library like react-native-pdf
-   * or pdfjs-dist for actual text extraction
+   * Extract text from PDF (placeholder implementation)
    */
   async extractFromPDF(fileUri: string): Promise<TextExtractionResult> {
     try {
-      // Check cache first
-      const cached = this.getCachedText(fileUri);
+      const cached = await this.getCachedText(fileUri);
       if (cached) {
         return cached;
       }
 
-      // TODO: Implement actual PDF text extraction
-      // For now, we'll simulate detection of image-based PDFs
       const isImageBased = await this.detectImageOnlyPDF(fileUri);
 
       if (isImageBased) {
@@ -37,7 +30,7 @@ export const textExtractionService = {
         };
       }
 
-      // Placeholder: In real implementation, extract text here
+      // Placeholder text
       const extractedText = 'Sample extracted text from PDF...';
 
       const result: TextExtractionResult = {
@@ -45,9 +38,7 @@ export const textExtractionService = {
         isImageBased: false,
       };
 
-      // Cache the result
-      this.cacheText(fileUri, result);
-
+      await this.cacheText(fileUri, result);
       return result;
     } catch (error) {
       console.error('PDF extraction error:', error);
@@ -56,19 +47,15 @@ export const textExtractionService = {
   },
 
   /**
-   * Extract text from EPUB
-   * Note: This is a placeholder. In production, you'd parse EPUB structure
+   * Extract text from EPUB (placeholder implementation)
    */
   async extractFromEPUB(fileUri: string): Promise<TextExtractionResult> {
     try {
-      // Check cache first
-      const cached = this.getCachedText(fileUri);
+      const cached = await this.getCachedText(fileUri);
       if (cached) {
         return cached;
       }
 
-      // TODO: Implement actual EPUB parsing
-      // EPUB files are ZIP archives containing XHTML files
       const extractedText = 'Sample extracted text from EPUB...';
 
       const result: TextExtractionResult = {
@@ -76,9 +63,7 @@ export const textExtractionService = {
         isImageBased: false,
       };
 
-      // Cache the result
-      this.cacheText(fileUri, result);
-
+      await this.cacheText(fileUri, result);
       return result;
     } catch (error) {
       console.error('EPUB extraction error:', error);
@@ -87,21 +72,16 @@ export const textExtractionService = {
   },
 
   /**
-   * Detect if PDF is image-only (heuristic)
+   * Detect image-only PDFs (simple heuristic)
    */
   async detectImageOnlyPDF(fileUri: string): Promise<boolean> {
     try {
-      // Heuristic: Check file size and attempt text extraction
       const fileInfo = await FileSystem.getInfoAsync(fileUri);
-      
-      // If file is very large, it might be image-based
-      // This is a simple heuristic - in production, you'd analyze the PDF structure
+
       if (fileInfo.exists && fileInfo.size && fileInfo.size > 50 * 1024 * 1024) {
-        // Files > 50MB might be scanned documents
         return true;
       }
 
-      // TODO: Implement actual detection by analyzing PDF structure
       return false;
     } catch (error) {
       console.error('Image detection error:', error);
@@ -112,10 +92,10 @@ export const textExtractionService = {
   /**
    * Cache extracted text
    */
-  cacheText(fileUri: string, result: TextExtractionResult) {
+  async cacheText(fileUri: string, result: TextExtractionResult) {
     try {
-      const cacheKey = `text_${fileUri}`;
-      storage.set(cacheKey, JSON.stringify(result));
+      const key = `${CACHE_PREFIX}${fileUri}`;
+      await AsyncStorage.setItem(key, JSON.stringify(result));
     } catch (error) {
       console.error('Cache text error:', error);
     }
@@ -124,14 +104,11 @@ export const textExtractionService = {
   /**
    * Get cached text
    */
-  getCachedText(fileUri: string): TextExtractionResult | null {
+  async getCachedText(fileUri: string): Promise<TextExtractionResult | null> {
     try {
-      const cacheKey = `text_${fileUri}`;
-      const cached = storage.getString(cacheKey);
-      if (cached) {
-        return JSON.parse(cached);
-      }
-      return null;
+      const key = `${CACHE_PREFIX}${fileUri}`;
+      const cached = await AsyncStorage.getItem(key);
+      return cached ? JSON.parse(cached) : null;
     } catch (error) {
       console.error('Get cached text error:', error);
       return null;
@@ -139,12 +116,12 @@ export const textExtractionService = {
   },
 
   /**
-   * Clear cache for a specific file
+   * Clear cache for a file
    */
-  clearCache(fileUri: string) {
+  async clearCache(fileUri: string) {
     try {
-      const cacheKey = `text_${fileUri}`;
-      storage.delete(cacheKey);
+      const key = `${CACHE_PREFIX}${fileUri}`;
+      await AsyncStorage.removeItem(key);
     } catch (error) {
       console.error('Clear cache error:', error);
     }
@@ -153,11 +130,43 @@ export const textExtractionService = {
   /**
    * Clear all cache
    */
-  clearAllCache() {
+  async clearAllCache() {
     try {
-      storage.clearAll();
+      const keys = await AsyncStorage.getAllKeys();
+      const textKeys = keys.filter((k) => k.startsWith(CACHE_PREFIX));
+      await AsyncStorage.multiRemove(textKeys);
     } catch (error) {
       console.error('Clear all cache error:', error);
+    }
+  },
+
+  /**
+   * Main wrapper used by the app
+   */
+  async extractText(
+    fileUri: string
+  ): Promise<{ data: string | null; error: string | null }> {
+    try {
+      const lowerUri = fileUri.toLowerCase();
+      let result: TextExtractionResult;
+
+      if (lowerUri.endsWith('.pdf')) {
+        result = await this.extractFromPDF(fileUri);
+      } else if (lowerUri.endsWith('.epub')) {
+        result = await this.extractFromEPUB(fileUri);
+      } else {
+        throw new Error('Unsupported file format');
+      }
+
+      if (result.isImageBased) {
+        console.warn('Scanned PDF detected. No text available.');
+        return { data: '', error: null };
+      }
+
+      return { data: result.text, error: null };
+    } catch (error: any) {
+      console.error('Text extraction error:', error);
+      return { data: null, error: error.message };
     }
   },
 };

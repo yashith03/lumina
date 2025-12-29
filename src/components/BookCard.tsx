@@ -1,7 +1,12 @@
+// src/components/BookCard.tsx
+
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getPublicUrl } from '../services/storageService';
 import { Book } from '../types/models';
 import { formatRelativeTime } from '../utils/time';
+
 
 interface BookCardProps {
   book: Book;
@@ -11,6 +16,7 @@ interface BookCardProps {
 
 export function BookCard({ book, onPress, variant = 'grid' }: BookCardProps) {
   const isHorizontal = variant === 'horizontal';
+  const coverUrl = book.cover_path ? getPublicUrl('covers', book.cover_path) : null;
 
   return (
     <TouchableOpacity
@@ -27,32 +33,35 @@ export function BookCard({ book, onPress, variant = 'grid' }: BookCardProps) {
           isHorizontal ? 'w-24 h-32' : 'w-full h-48'
         } bg-gray-200 dark:bg-gray-700`}
       >
-        {book.cover_path ? (
+        {coverUrl ? (
           <Image
-            source={{ uri: book.cover_path }}
+            source={{ uri: coverUrl }}
             className="w-full h-full"
             resizeMode="cover"
           />
         ) : (
-          <View className="w-full h-full items-center justify-center bg-gradient-to-br from-primary-400 to-accent-500">
-            <Text className="text-white text-2xl font-bold">
+          <LinearGradient
+            colors={['#38bdf8', '#d946ef']}
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text className="text-2xl font-bold text-white">
               {book.title.charAt(0).toUpperCase()}
             </Text>
-          </View>
+          </LinearGradient>
         )}
       </View>
 
       {/* Book Info */}
       <View className={`${isHorizontal ? 'flex-1 p-3' : 'p-4'}`}>
         <Text
-          className="text-gray-900 dark:text-white font-semibold text-base mb-1"
+          className="mb-1 text-base font-semibold text-gray-900 dark:text-white"
           numberOfLines={2}
         >
           {book.title}
         </Text>
         
         <Text
-          className="text-gray-600 dark:text-gray-400 text-sm mb-2"
+          className="mb-2 text-sm text-gray-600 dark:text-gray-400"
           numberOfLines={1}
         >
           {book.author}
@@ -61,22 +70,22 @@ export function BookCard({ book, onPress, variant = 'grid' }: BookCardProps) {
         {!isHorizontal && (
           <>
             <View className="flex-row items-center mb-2">
-              <View className="bg-primary-100 dark:bg-primary-900 px-2 py-1 rounded-full">
-                <Text className="text-primary-700 dark:text-primary-300 text-xs font-medium">
+              <View className="px-2 py-1 rounded-full bg-primary-100 dark:bg-primary-900">
+                <Text className="text-xs font-medium text-primary-700 dark:text-primary-300">
                   {book.category}
                 </Text>
               </View>
               
               {book.visibility === 'public' && (
-                <View className="bg-green-100 dark:bg-green-900 px-2 py-1 rounded-full ml-2">
-                  <Text className="text-green-700 dark:text-green-300 text-xs font-medium">
+                <View className="px-2 py-1 ml-2 bg-green-100 rounded-full dark:bg-green-900">
+                  <Text className="text-xs font-medium text-green-700 dark:text-green-300">
                     Public
                   </Text>
                 </View>
               )}
             </View>
 
-            <Text className="text-gray-500 dark:text-gray-500 text-xs">
+            <Text className="text-xs text-gray-500 dark:text-gray-500">
               Added {formatRelativeTime(book.created_at)}
             </Text>
           </>

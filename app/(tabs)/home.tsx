@@ -1,3 +1,5 @@
+// app/(tabs)/home.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -47,10 +49,10 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View className="p-6 pb-4">
-          <Text className="text-gray-600 dark:text-gray-400 text-sm mb-1">
+          <Text className="mb-1 text-sm text-gray-600 dark:text-gray-400">
             Welcome back,
           </Text>
-          <Text className="text-gray-900 dark:text-white text-2xl font-bold">
+          <Text className="text-2xl font-bold text-gray-900 dark:text-white">
             {profile?.full_name || user?.email || 'Guest'}
           </Text>
         </View>
@@ -59,12 +61,12 @@ export default function HomeScreen() {
         {user && (
           <View className="mb-6">
             <View className="flex-row items-center justify-between px-6 mb-4">
-              <Text className="text-gray-900 dark:text-white text-xl font-bold">
+              <Text className="text-xl font-bold text-gray-900 dark:text-white">
                 Continue Reading
               </Text>
               {recentBooks && recentBooks.length > 0 && (
                 <TouchableOpacity onPress={() => router.push('/(tabs)/library')}>
-                  <Text className="text-primary-500 font-semibold">See All</Text>
+                  <Text className="font-semibold text-primary-500">See All</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -103,7 +105,7 @@ export default function HomeScreen() {
         {/* Recommended Books */}
         <View className="mb-6">
           <View className="px-6 mb-4">
-            <Text className="text-gray-900 dark:text-white text-xl font-bold">
+            <Text className="text-xl font-bold text-gray-900 dark:text-white">
               {user ? 'Recommended for You' : 'Explore Books'}
             </Text>
           </View>
@@ -113,7 +115,7 @@ export default function HomeScreen() {
               <LoadingSkeleton />
             </View>
           ) : recommendedBooks && recommendedBooks.length > 0 ? (
-            <View className="px-6 flex-row flex-wrap">
+            <View className="flex-row flex-wrap px-6">
               {recommendedBooks.slice(0, 6).map((book) => (
                 <BookCard
                   key={book.id}
@@ -136,19 +138,19 @@ export default function HomeScreen() {
 
         {/* CTA for guests */}
         {!user && (
-          <View className="mx-6 mb-6 bg-primary-50 dark:bg-primary-900 rounded-2xl p-6">
+          <View className="p-6 mx-6 mb-6 bg-primary-50 dark:bg-primary-900 rounded-2xl">
             <Ionicons name="star" size={32} color="#0ea5e9" />
-            <Text className="text-gray-900 dark:text-white text-lg font-bold mt-3 mb-2">
+            <Text className="mt-3 mb-2 text-lg font-bold text-gray-900 dark:text-white">
               Sign in for more features
             </Text>
-            <Text className="text-gray-600 dark:text-gray-400 mb-4">
+            <Text className="mb-4 text-gray-600 dark:text-gray-400">
               Upload your own books, sync progress, and get personalized recommendations
             </Text>
             <TouchableOpacity
               onPress={() => router.push('/(auth)/welcome')}
-              className="bg-primary-500 rounded-full py-3 px-6"
+              className="px-6 py-3 rounded-full bg-primary-500"
             >
-              <Text className="text-white font-semibold text-center">
+              <Text className="font-semibold text-center text-white">
                 Get Started
               </Text>
             </TouchableOpacity>

@@ -1,3 +1,5 @@
+// src/services/booksService.ts
+
 import { Book, PaginatedResponse } from '../types/models';
 import { supabase } from './supabaseClient';
 
@@ -34,9 +36,10 @@ export const booksService = {
         query = query.eq('category', params.category);
       }
 
-      // Search
+      // Search (escape special characters)
       if (params.search) {
-        query = query.or(`title.ilike.%${params.search}%,author.ilike.%${params.search}%`);
+        const searchTerm = params.search.replace(/[%_]/g, '\\$&');
+        query = query.or(`title.ilike.%${searchTerm}%,author.ilike.%${searchTerm}%`);
       }
 
       // Pagination

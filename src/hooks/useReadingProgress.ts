@@ -1,3 +1,6 @@
+// src/hooks/useReadingProgress.ts
+
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { progressService } from '../services/progressService';
 import { useAuth } from './useAuth';

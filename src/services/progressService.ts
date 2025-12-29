@@ -1,3 +1,5 @@
+// src/services/progressService.ts
+
 import { supabase } from './supabaseClient';
 
 export const progressService = {

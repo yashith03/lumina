@@ -1,11 +1,13 @@
+//app/(tabs)/library
+
 import { useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    RefreshControl,
-    Text,
-    View
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  Text,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BookCard } from '../../src/components/BookCard';
@@ -21,7 +23,8 @@ const ITEMS_PER_PAGE = 20;
 export default function LibraryScreen() {
   const router = useRouter();
   const { user } = useAuth();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState(''); // Local input state
+  const [searchQuery, setSearchQuery] = useState(''); // Debounced search query
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const {
@@ -40,12 +43,17 @@ export default function LibraryScreen() {
 
   const allBooks = booksPages?.pages?.flatMap((page) => page.data || []) || [];
 
-  const handleSearch = useCallback(
+  const debouncedSearch = useCallback(
     debounce((text: string) => {
       setSearchQuery(text);
     }, 300),
     []
   );
+
+  const handleSearch = (text: string) => {
+    setSearchInput(text);
+    debouncedSearch(text);
+  };
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -79,6 +87,7 @@ export default function LibraryScreen() {
             Library
           </Text>
           <SearchBar
+            value={searchInput}
             placeholder="Search books..."
             onChangeText={handleSearch}
           />
@@ -104,6 +113,7 @@ export default function LibraryScreen() {
             description="Try adjusting your search or filters"
             actionLabel="Browse public books"
             onAction={() => {
+              setSearchInput('');
               setSearchQuery('');
               setSelectedCategory(null);
               handleRefresh();

@@ -1,3 +1,5 @@
+// src/hooks/useBooks.ts
+
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { booksService } from '../services/booksService';
 import { useAuth } from './useAuth';

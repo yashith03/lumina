@@ -1,3 +1,5 @@
+// src/components/VoicePickerModal.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -51,7 +53,7 @@ export function VoicePickerModal({
       transparent
       onRequestClose={onClose}
     >
-      <View className="flex-1 justify-end bg-black/50">
+      <View className="justify-end flex-1 bg-black/50">
         <View className="bg-white dark:bg-gray-900 rounded-t-3xl max-h-[70%]">
           {/* Header */}
           <View className="flex-row items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
@@ -65,11 +67,11 @@ export function VoicePickerModal({
 
           {/* Voice List */}
           {loading ? (
-            <View className="p-8 items-center">
+            <View className="items-center p-8">
               <ActivityIndicator size="large" color="#0ea5e9" />
             </View>
           ) : voices.length === 0 ? (
-            <View className="p-8 items-center">
+            <View className="items-center p-8">
               <Text className="text-gray-600 dark:text-gray-400">
                 No voices available for this language
               </Text>
@@ -88,10 +90,10 @@ export function VoicePickerModal({
                 >
                   <View className="flex-row items-center justify-between">
                     <View className="flex-1">
-                      <Text className="text-gray-900 dark:text-white font-semibold mb-1">
+                      <Text className="mb-1 font-semibold text-gray-900 dark:text-white">
                         {voice.name}
                       </Text>
-                      <Text className="text-gray-600 dark:text-gray-400 text-sm">
+                      <Text className="text-sm text-gray-600 dark:text-gray-400">
                         {voice.language} • {voice.quality}
                       </Text>
                     </View>

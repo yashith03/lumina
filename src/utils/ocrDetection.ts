@@ -1,3 +1,5 @@
+// src/utils/ocrDetection.ts
+
 /**
  * Detect if PDF contains only images (heuristic approach)
  */

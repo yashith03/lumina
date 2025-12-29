@@ -1,3 +1,5 @@
+// src/utils/textChunking.ts
+
 import { TextChunk } from '../types/models';
 
 /**

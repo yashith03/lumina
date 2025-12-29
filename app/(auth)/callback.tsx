@@ -1,3 +1,5 @@
+// app/(auth)/callback.tsx
+
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
@@ -16,7 +18,7 @@ export default function CallbackScreen() {
   }, []);
 
   return (
-    <View className="flex-1 items-center justify-center bg-white">
+    <View className="items-center justify-center flex-1 bg-white">
       <ActivityIndicator size="large" color="#0ea5e9" />
     </View>
   );

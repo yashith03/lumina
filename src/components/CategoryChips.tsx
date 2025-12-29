@@ -1,3 +1,5 @@
+// src/components/CategoryChips.tsx
+
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity } from 'react-native';

@@ -1,3 +1,5 @@
+// src/hooks/useTTS.ts
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 import { ttsService } from '../services/ttsService';
@@ -106,7 +108,11 @@ export function useTTS() {
     stop,
     pause,
     resume,
+    ttsEnabled: isPlaying,
     isPlaying,
+    currentVoice: settings.voice,
+    speed: settings.speed,
+    language: settings.language,
     currentSentenceIndex,
     setCurrentSentenceIndex,
   };

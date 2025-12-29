@@ -1,3 +1,5 @@
+// src/services/authService.ts
+
 import { makeRedirectUri } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { supabase } from './supabaseClient';
@@ -5,13 +7,13 @@ import { supabase } from './supabaseClient';
 WebBrowser.maybeCompleteAuthSession();
 
 const redirectUrl = makeRedirectUri({
-  scheme: 'lumina2',
+  scheme: 'lumina',
   path: 'auth/callback',
 });
 
 export const authService = {
   /**
-   * Sign in with Google OAuth
+   * Sign in with Google OAuth (Expo-safe)
    */
   async signInWithGoogle() {
     try {
@@ -19,12 +21,29 @@ export const authService = {
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: false,
+          skipBrowserRedirect: true, // IMPORTANT
         },
       });
 
       if (error) throw error;
-      return { data, error: null };
+      if (!data?.url) throw new Error('No OAuth URL returned');
+
+      const result = await WebBrowser.openAuthSessionAsync(
+        data.url,
+        redirectUrl
+      );
+
+      if (result.type !== 'success' || !result.url) {
+        throw new Error('Authentication cancelled');
+      }
+
+      // ✅ Exchange the code for a session (CRITICAL FIX)
+      const { data: exchangeData, error: exchangeError } =
+        await supabase.auth.exchangeCodeForSession(result.url);
+
+      if (exchangeError) throw exchangeError;
+
+      return { data: exchangeData.session, error: null };
     } catch (error: any) {
       console.error('Google sign-in error:', error);
       return { data: null, error: error.message };
@@ -83,7 +102,10 @@ export const authService = {
   /**
    * Create or update user profile
    */
-  async upsertProfile(userId: string, profileData: { full_name?: string; avatar_url?: string }) {
+  async upsertProfile(
+    userId: string,
+    profileData: { full_name?: string; avatar_url?: string }
+  ) {
     try {
       const { data, error } = await supabase
         .from('profiles')

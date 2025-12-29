@@ -1,3 +1,5 @@
+//app/(tabs)/settings
+
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -146,23 +148,23 @@ export default function SettingsScreen() {
       <ScrollView className="flex-1">
         {/* Header */}
         <View className="px-4 pt-4 pb-2">
-          <Text className="text-gray-900 dark:text-white text-2xl font-bold mb-6">
+          <Text className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
             Settings
           </Text>
         </View>
 
         {/* Profile Card */}
         {user && profile && (
-          <View className="mx-4 mb-6 p-4 bg-gradient-to-br from-sky-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-lg">
+          <View className="p-4 mx-4 mb-6 rounded-lg bg-gradient-to-br from-sky-50 to-blue-50 dark:from-gray-800 dark:to-gray-700">
             <View className="flex-row items-center">
-              <View className="w-16 h-16 rounded-full bg-sky-500 flex items-center justify-center mr-4">
+              <View className="flex items-center justify-center w-16 h-16 mr-4 rounded-full bg-sky-500">
                 <Ionicons name="person" size={32} color="white" />
               </View>
               <View className="flex-1">
-                <Text className="text-gray-900 dark:text-white text-lg font-bold">
+                <Text className="text-lg font-bold text-gray-900 dark:text-white">
                   {profile.full_name || 'User'}
                 </Text>
-                <Text className="text-gray-600 dark:text-gray-400 text-sm">
+                <Text className="text-sm text-gray-600 dark:text-gray-400">
                   {user.email}
                 </Text>
               </View>
@@ -173,7 +175,7 @@ export default function SettingsScreen() {
         {/* Settings Sections */}
         {settingsSections.map((section, sectionIndex) => (
           <View key={sectionIndex} className="mb-6">
-            <Text className="text-gray-600 dark:text-gray-400 text-xs font-bold uppercase px-4 mb-3 ml-1">
+            <Text className="px-4 mb-3 ml-1 text-xs font-bold text-gray-600 uppercase dark:text-gray-400">
               {section.title}
             </Text>
 
@@ -196,11 +198,11 @@ export default function SettingsScreen() {
                 )}
 
                 <View className="flex-1">
-                  <Text className="text-gray-900 dark:text-white font-semibold">
+                  <Text className="font-semibold text-gray-900 dark:text-white">
                     {item.label}
                   </Text>
                   {item.value && item.type !== 'toggle' && (
-                    <Text className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                    <Text className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                       {item.value}
                     </Text>
                   )}
@@ -232,10 +234,10 @@ export default function SettingsScreen() {
 
         {/* App Info */}
         <View className="px-4 py-8 border-t border-gray-100 dark:border-gray-800">
-          <Text className="text-gray-600 dark:text-gray-400 text-center text-sm">
+          <Text className="text-sm text-center text-gray-600 dark:text-gray-400">
             Lumina v1.0.0
           </Text>
-          <Text className="text-gray-500 dark:text-gray-500 text-center text-xs mt-2">
+          <Text className="mt-2 text-xs text-center text-gray-500 dark:text-gray-500">
             © 2025 All Rights Reserved
           </Text>
         </View>

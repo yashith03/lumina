@@ -1,3 +1,5 @@
+// src/components/SegmentedTabs.tsx
+
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -37,7 +39,7 @@ export function SegmentedTabs({
   };
 
   return (
-    <View className="flex-row bg-gray-200 dark:bg-gray-800 rounded-full p-1 mb-4">
+    <View className="flex-row p-1 mb-4 bg-gray-200 rounded-full dark:bg-gray-800">
       {actualTabs.map((tab, index) => (
         <TouchableOpacity
           key={`${tab.id}`}

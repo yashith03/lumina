@@ -1,3 +1,5 @@
+//app/(tabs)/upload
+
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRouter } from 'expo-router';
@@ -100,24 +102,24 @@ export default function UploadScreen() {
   if (!user) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-gray-900">
-        <View className="flex-1 justify-center items-center px-6">
+        <View className="items-center justify-center flex-1 px-6">
           <Ionicons
             name="cloud-upload-outline"
             size={60}
             color="#9CA3AF"
             style={{ marginBottom: 16 }}
           />
-          <Text className="text-gray-900 dark:text-white text-xl font-bold text-center mb-2">
+          <Text className="mb-2 text-xl font-bold text-center text-gray-900 dark:text-white">
             Sign In Required
           </Text>
-          <Text className="text-gray-600 dark:text-gray-400 text-center mb-6">
+          <Text className="mb-6 text-center text-gray-600 dark:text-gray-400">
             You need to sign in to upload books.
           </Text>
           <TouchableOpacity
-            className="bg-sky-500 px-6 py-3 rounded-lg"
+            className="px-6 py-3 rounded-lg bg-sky-500"
             onPress={() => router.replace('/(auth)/welcome')}
           >
-            <Text className="text-white font-semibold text-center">Sign In</Text>
+            <Text className="font-semibold text-center text-white">Sign In</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -129,7 +131,7 @@ export default function UploadScreen() {
       <ScrollView className="flex-1">
         {/* Header */}
         <View className="px-4 pt-4 pb-2">
-          <Text className="text-gray-900 dark:text-white text-2xl font-bold mb-4">
+          <Text className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
             Upload Book
           </Text>
         </View>
@@ -149,7 +151,7 @@ export default function UploadScreen() {
         {/* Upload Button */}
         <View className="px-4 mb-6">
           <TouchableOpacity
-            className="bg-sky-500 rounded-lg py-4 flex-row items-center justify-center"
+            className="flex-row items-center justify-center py-4 rounded-lg bg-sky-500"
             onPress={pickFile}
             disabled={isLoading}
           >
@@ -159,7 +161,7 @@ export default function UploadScreen() {
               color="white"
               style={{ marginRight: 8 }}
             />
-            <Text className="text-white font-semibold text-base">
+            <Text className="text-base font-semibold text-white">
               {selectedFile ? 'Change File' : 'Select Book File'}
             </Text>
           </TouchableOpacity>
@@ -167,14 +169,14 @@ export default function UploadScreen() {
 
         {/* Selected File Info */}
         {selectedFile && (
-          <View className="px-4 mb-6 p-4 bg-sky-50 dark:bg-sky-900/20 rounded-lg">
+          <View className="p-4 px-4 mb-6 rounded-lg bg-sky-50 dark:bg-sky-900/20">
             <View className="flex-row items-center mb-2">
               <Ionicons name="document" size={20} color="#0ea5e9" />
-              <Text className="ml-2 text-gray-900 dark:text-white font-semibold flex-1">
+              <Text className="flex-1 ml-2 font-semibold text-gray-900 dark:text-white">
                 {selectedFile.name}
               </Text>
             </View>
-            <Text className="text-gray-600 dark:text-gray-400 text-sm">
+            <Text className="text-sm text-gray-600 dark:text-gray-400">
               {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
             </Text>
           </View>
@@ -185,11 +187,11 @@ export default function UploadScreen() {
           <View className="px-4 pb-6">
             {/* Title */}
             <View className="mb-4">
-              <Text className="text-gray-900 dark:text-white font-semibold mb-2">
+              <Text className="mb-2 font-semibold text-gray-900 dark:text-white">
                 Book Title *
               </Text>
               <TextInput
-                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-4 py-3"
+                className="px-4 py-3 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Enter book title"
                 placeholderTextColor="#9CA3AF"
                 value={title}
@@ -200,11 +202,11 @@ export default function UploadScreen() {
 
             {/* Author */}
             <View className="mb-4">
-              <Text className="text-gray-900 dark:text-white font-semibold mb-2">
+              <Text className="mb-2 font-semibold text-gray-900 dark:text-white">
                 Author *
               </Text>
               <TextInput
-                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-4 py-3"
+                className="px-4 py-3 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Enter author name"
                 placeholderTextColor="#9CA3AF"
                 value={author}
@@ -215,11 +217,11 @@ export default function UploadScreen() {
 
             {/* Description */}
             <View className="mb-4">
-              <Text className="text-gray-900 dark:text-white font-semibold mb-2">
+              <Text className="mb-2 font-semibold text-gray-900 dark:text-white">
                 Description
               </Text>
               <TextInput
-                className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg px-4 py-3 min-h-24"
+                className="px-4 py-3 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white min-h-24"
                 placeholder="Enter book description (optional)"
                 placeholderTextColor="#9CA3AF"
                 value={description}
@@ -233,7 +235,7 @@ export default function UploadScreen() {
 
             {/* Category */}
             <View className="mb-6">
-              <Text className="text-gray-900 dark:text-white font-semibold mb-2">
+              <Text className="mb-2 font-semibold text-gray-900 dark:text-white">
                 Category
               </Text>
               <CategoryChips
@@ -243,7 +245,7 @@ export default function UploadScreen() {
             </View>
 
             {/* Visibility Info */}
-            <View className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <View className="p-4 mb-6 rounded-lg bg-blue-50 dark:bg-blue-900/20">
               <View className="flex-row items-start">
                 <Ionicons
                   name={activeTab === 'personal' ? 'lock-closed' : 'globe'}
@@ -252,10 +254,10 @@ export default function UploadScreen() {
                   style={{ marginTop: 2, marginRight: 8 }}
                 />
                 <View className="flex-1">
-                  <Text className="text-gray-900 dark:text-white font-semibold mb-1">
+                  <Text className="mb-1 font-semibold text-gray-900 dark:text-white">
                     {activeTab === 'personal' ? 'Private' : 'Public'}
                   </Text>
-                  <Text className="text-gray-600 dark:text-gray-400 text-sm">
+                  <Text className="text-sm text-gray-600 dark:text-gray-400">
                     {activeTab === 'personal'
                       ? 'Only you can access this book'
                       : 'Anyone can find and read this book'}
@@ -275,23 +277,23 @@ export default function UploadScreen() {
               {isLoading ? (
                 <>
                   <ActivityIndicator color="white" style={{ marginRight: 8 }} />
-                  <Text className="text-white font-semibold">Uploading...</Text>
+                  <Text className="font-semibold text-white">Uploading...</Text>
                 </>
               ) : (
                 <>
                   <Ionicons name="checkmark" size={24} color="white" />
-                  <Text className="text-white font-semibold ml-2">Upload Book</Text>
+                  <Text className="ml-2 font-semibold text-white">Upload Book</Text>
                 </>
               )}
             </TouchableOpacity>
 
             {/* Cancel Button */}
             <TouchableOpacity
-              className="rounded-lg py-3 mt-3 border border-gray-300 dark:border-gray-600"
+              className="py-3 mt-3 border border-gray-300 rounded-lg dark:border-gray-600"
               onPress={resetForm}
               disabled={isLoading}
             >
-              <Text className="text-gray-900 dark:text-white font-semibold text-center">
+              <Text className="font-semibold text-center text-gray-900 dark:text-white">
                 Cancel
               </Text>
             </TouchableOpacity>

@@ -1,7 +1,10 @@
+// src/services/uploadService.ts
+
 import { decode } from 'base64-arraybuffer';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { BookUploadData } from '../types/models';
+import { sanitizeFilename } from '../utils/validators';
 import { supabase } from './supabaseClient';
 
 export const uploadService = {
@@ -56,7 +59,8 @@ export const uploadService = {
     fileUri: string,
     bucket: 'ebooks' | 'covers',
     fileName: string,
-    userId: string
+    userId: string,
+    contentType: string
   ) {
     try {
       // Read file as base64
@@ -64,15 +68,16 @@ export const uploadService = {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      // Generate unique file path
+      // Generate unique file path with sanitized filename
       const timestamp = Date.now();
-      const filePath = `${userId}/${timestamp}_${fileName}`;
+      const safeName = sanitizeFilename(fileName);
+      const filePath = `${userId}/${timestamp}_${safeName}`;
 
       // Upload to Supabase Storage
       const { data, error } = await supabase.storage
         .from(bucket)
         .upload(filePath, decode(fileData), {
-          contentType: bucket === 'ebooks' ? 'application/pdf' : 'image/jpeg',
+          contentType,
           upsert: false,
         });
 
@@ -90,12 +95,18 @@ export const uploadService = {
    */
   async createBook(userId: string, bookData: BookUploadData) {
     try {
+      // Detect file type
+      const isEpub = bookData.fileUri.toLowerCase().endsWith('.epub');
+      const ebookFileName = `${bookData.title}.${isEpub ? 'epub' : 'pdf'}`;
+      const ebookContentType = isEpub ? 'application/epub+zip' : 'application/pdf';
+
       // Upload ebook file
       const { path: filePath, error: fileError } = await this.uploadFile(
         bookData.fileUri,
         'ebooks',
-        `${bookData.title}.pdf`,
-        userId
+        ebookFileName,
+        userId,
+        ebookContentType
       );
 
       if (fileError || !filePath) {
@@ -109,7 +120,8 @@ export const uploadService = {
           bookData.coverUri,
           'covers',
           `${bookData.title}_cover.jpg`,
-          userId
+          userId,
+          'image/jpeg'
         );
 
         if (!coverError && path) {
@@ -122,10 +134,10 @@ export const uploadService = {
         .from('books')
         .insert({
           owner_id: userId,
-          title: bookData.title,
-          author: bookData.author,
-          description: bookData.description || null,
-          category: bookData.category,
+          title: bookData.title.trim(),
+          author: bookData.author.trim(),
+          description: bookData.description?.trim() || null,
+          category: bookData.category.trim(),
           visibility: bookData.visibility,
           file_path: filePath,
           cover_path: coverPath,

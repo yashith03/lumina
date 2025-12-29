@@ -1,3 +1,5 @@
+// app/_layout.tsx
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { useColorScheme } from 'react-native';

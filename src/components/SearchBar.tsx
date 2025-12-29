@@ -1,3 +1,5 @@
+// src/components/SearchBar.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { TextInput, View } from 'react-native';
@@ -10,14 +12,14 @@ interface SearchBarProps {
 
 export function SearchBar({ value, onChangeText, placeholder = 'Search books...' }: SearchBarProps) {
   return (
-    <View className="flex-row items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-3 mb-4">
+    <View className="flex-row items-center px-4 py-3 mb-4 bg-gray-100 rounded-full dark:bg-gray-800">
       <Ionicons name="search" size={20} color="#9CA3AF" />
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor="#9CA3AF"
-        className="flex-1 ml-2 text-gray-900 dark:text-white text-base"
+        className="flex-1 ml-2 text-base text-gray-900 dark:text-white"
       />
       {value.length > 0 && (
         <Ionicons
