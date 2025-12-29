@@ -1,33 +1,64 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import React from 'react';
+import { useColorScheme } from 'react-native';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export default function TabLayout() {
+export default function TabsLayout() {
   const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarActiveTintColor: '#0ea5e9',
+        tabBarInactiveTintColor: isDark ? '#9CA3AF' : '#6B7280',
+        tabBarStyle: {
+          backgroundColor: isDark ? '#1F2937' : '#ffffff',
+          borderTopColor: isDark ? '#374151' : '#E5E7EB',
+          paddingBottom: 8,
+          paddingTop: 8,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="library"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Library',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="library" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="upload"
+        options={{
+          title: 'Upload',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="cloud-upload" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
