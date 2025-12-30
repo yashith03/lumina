@@ -1,4 +1,4 @@
-// src/components/BookCard.tsx
+//src/components/BookCard.tsx
 
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
